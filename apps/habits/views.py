@@ -1,4 +1,5 @@
 from random import randint
+from django.db import models
 
 from rest_framework.decorators import action
 from rest_framework import viewsets
@@ -6,6 +7,7 @@ from rest_framework import generics
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from drf_spectacular.utils import extend_schema
+from rest_framework.views import APIView
 from rest_framework.viewsets import ReadOnlyModelViewSet
 from rest_framework.authentication import SessionAuthentication, BasicAuthentication
 from rest_framework.permissions import IsAuthenticated
@@ -13,6 +15,7 @@ from rest_framework_simplejwt.authentication import JWTAuthentication
 
 
 from apps.habits.models import Habit, Tracker, MotivationPhrase
+from apps.habits.reminders import send_telegram, check_all_habits
 from apps.habits.serializers import HabitSerializer, TrackingSerializer, MotivationPhraseSerializer
 
 
@@ -59,6 +62,20 @@ class MotivationPhraseViewSet(ReadOnlyModelViewSet):
             return Response(serializer.data,status=200)
         return Response({"detail": "No phrases found"}, status=404)
 
+class TestAPI(APIView):
+    permission_classes = [AllowAny]
+
+    def post(self,text):
+        message = 'i am working'
+        chat_id = 1014030119
+        return Response(send_telegram(chat_id,message))
+
+
+class Test2API(APIView):
+    permission_classes = [AllowAny]
+
+    def get(self):
+        return Response(check_all_habits().json)
 
 
 

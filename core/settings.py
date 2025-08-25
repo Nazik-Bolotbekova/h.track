@@ -25,6 +25,9 @@ load_dotenv()
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.getenv('SECRET_KEY')
 
+bot = os.getenv('BOT_TOKEN')
+chat_id = os.getenv('TELEGRAM_CHAT_ID')
+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv('DEBUG')
 
@@ -162,6 +165,12 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 PHONENUMBER_DEFAULT_REGION = 'KG'
 
 AUTH_USER_MODEL = 'users.CustomUser'
+
+REDIS_HOST = os.getenv('REDIS_HOST', default='localhost')
+REDIS_PORT = os.getenv('REDIS_PORT', default=6379)
+
+CELERY_BROKER_URL = f'redis://{REDIS_HOST}:{REDIS_PORT}/0'
+CELERY_RESULT_BACKEND = f'redis://{REDIS_HOST}:{REDIS_PORT}/0'
 
 JAZZMIN_SETTINGS = {
     # title of the window (Will default to current_admin_site.site_title if absent or None)

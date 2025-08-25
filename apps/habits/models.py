@@ -16,7 +16,7 @@ class Habit(models.Model):
     reminder_time = models.TimeField(null=True, blank=True)
     day_of_week = models.PositiveSmallIntegerField(choices=Weekday.choices,null=True,blank=True)
     day_of_month = models.PositiveSmallIntegerField(null=True,blank=True)
-
+    last_reminded = models.DateTimeField(null=True, blank=True)
 
     def __str__(self):
         return self.title
@@ -40,3 +40,10 @@ class Tracker(models.Model):
 
 class MotivationPhrase(models.Model):
     text = models.TextField(max_length=255)
+
+    def __str__(self):
+        return self.text
+
+    class Meta:
+        verbose_name = 'Фраза'
+        verbose_name_plural = 'Фразы'
